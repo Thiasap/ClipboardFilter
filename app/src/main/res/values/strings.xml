@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ClipboardFilter</string>
+    <string name="notice1">暂时没界面，配置文件在这里：</string>
+    <string name="notice2">/sdcard/Android/hooker/clipboardfilter.conf</string>
+    <string name="notice3">里，使用正则表达式，一行一条规则。被hook的app有读取本地文件的权限，存储重定向用户需要特别注意！
+    如果实在不想给存储权限， 或者重定向用户觉得设置太麻烦，可以反编译本app自己改代码。
+        正则源码：Pattern.matches(pattern, content);以下提供正则测试
+    </string>
+    <string name="thanks">部分源码来源于 https://github.com/congshengwu/Xposed_Clipboard</string>
+    <string name="reR">规则：</string>
+    <string name="reS">被匹配的文本：</string>
+    <string name="test">测试</string>
+
+</resources>
