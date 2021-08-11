@@ -1,2 +1,3 @@
 rootProject.name = "ClipboardFilter"
 include ':app'
+include ':clipboardfilter-lite'
