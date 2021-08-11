@@ -26,7 +26,7 @@ public class xposedInit implements IXposedHookLoadPackage{
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) {
         File conf = new File(CONF);
-        if(conf.exists()){
+        if(conf.exists()||!CUSTOM_RULE.equals("")){
             XposedHelpers.findAndHookMethod(ClipboardManager.class, "setPrimaryClip",
                 ClipData.class, new XC_MethodHook() {
                     @Override

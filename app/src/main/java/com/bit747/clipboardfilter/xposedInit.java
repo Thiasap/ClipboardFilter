@@ -29,73 +29,52 @@ public class xposedInit implements IXposedHookLoadPackage{
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         File conf = new File(CONF);
-        if(conf.exists()){
+        if(conf.exists()||!CUSTOM_RULE.equals("")){
             XposedHelpers.findAndHookMethod(ClipboardManager.class, "setPrimaryClip",
-                ClipData.class, new XC_MethodHook() {
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        super.beforeHookedMethod(param);
-                        XposedBridge.log(TAG + "hook成功");
-                        // 获取剪切板内容
-                        ClipData clipData = (ClipData) param.args[0];
-                        String clipStr = clipData.getItemAt(0).getText().toString();
-                        // 得到应用上下文
-                        Context curContext =
-                                AndroidAppHelper.currentApplication().getApplicationContext();
-                        PackageManager pm = curContext.getPackageManager();
-                        // 获取应用名
-                        String appName = lpparam.appInfo.loadLabel(pm).toString();
-                        // 获取应用图标
-                        //Drawable icon = lpparam.appInfo.loadIcon(pm);
-                        //正则匹配
-                        List<String> rules = new ArrayList<String>();
-                        try {
-                            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-                                InputStream instream = new FileInputStream(conf);
-                                if (instream != null) {
-                                    InputStreamReader inputreader = new InputStreamReader(instream);
-                                    BufferedReader buffreader = new BufferedReader(inputreader);
-                                    String line;
-                                    //分行读取
-                                    while (( line = buffreader.readLine()) != null) {
-                                        rules.add(line);
+                    ClipData.class, new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            super.beforeHookedMethod(param);
+                            // 获取剪切板内容
+                            ClipData clipData = (ClipData) param.args[0];
+                            String clipStr = clipData.getItemAt(0).getText().toString();
+                            //正则匹配
+                            boolean isExist = false;
+                            try {
+                                if(CUSTOM_RULE.equals("")){
+                                    List<String> rules = new ArrayList<String>();
+                                    if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+                                        InputStream instream = new FileInputStream(conf);
+                                        if (instream != null) {
+                                            InputStreamReader inputreader = new InputStreamReader(instream);
+                                            BufferedReader buffreader = new BufferedReader(inputreader);
+                                            String line;
+                                            //分行读取
+                                            while (( line = buffreader.readLine()) != null) {
+                                                rules.add(line);
+                                            }
+                                            instream.close();
+                                        }
                                     }
-                                    instream.close();
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        boolean isExist = false;
-                        try {
-                            if(CUSTOM_RULE.equals("")){
-                                for(String rule:rules){
-                                    if(Pattern.matches(rule, clipStr)){
-                                        isExist=true;
-                                        // 准备剪切板内容
-                                        String showText = "\"" + appName + "\"" + "写入剪贴板被过滤。内容为:" + clipStr;
-                                        // Xposed打印log信息
-                                        XposedBridge.log(TAG + showText);
-                                        break;
+                                    for(String rule:rules){
+                                        if(Pattern.matches(rule, clipStr)){
+                                            isExist = true;
+                                            XposedBridge.log(TAG + "过滤成功");
+                                            break;
+                                        }
                                     }
+                                }else {
+                                    isExist = Pattern.matches(CUSTOM_RULE, clipStr);
                                 }
-                            }else {
-                                isExist = Pattern.matches(CUSTOM_RULE, clipStr);
+                            }catch(Exception e){
+                                isExist = false;
                             }
-                        }catch(Exception e){
-                            isExist = false;
+                            if (isExist){
+                                ClipData c= ClipData.newPlainText("","");
+                                param.args[0] = c;
+                            }
                         }
-                        if (isExist){
-                            ClipData c= ClipData.newPlainText("","");
-                            param.args[0] = c;
-                        }
-
-                    }
-                    @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        super.afterHookedMethod(param);
-                    }
-            });
+                    });
         }
 
     }
