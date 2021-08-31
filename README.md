@@ -1,5 +1,5 @@
 # ClipboardFilter
-剪贴板写入过滤的xposed插件，基于正则表达式过滤剪贴板写入内容。默认hook所有app，lspoed可以选择作用域来限制。
+剪贴板写入过滤的xposed插件，基于正则表达式过滤剪贴板写入内容。默认hook所有app，lsposed可以选择作用域来限制。
 
 部分源码来源于 https://github.com/congshengwu/Xposed_Clipboard 
  

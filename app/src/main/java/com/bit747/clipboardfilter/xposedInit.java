@@ -1,10 +1,7 @@
 package com.bit747.clipboardfilter;
 
-import android.app.AndroidAppHelper;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Environment;
 
 import java.io.BufferedReader;
@@ -42,7 +39,7 @@ public class xposedInit implements IXposedHookLoadPackage{
                             boolean isExist = false;
                             try {
                                 if(CUSTOM_RULE.equals("")){
-                                    List<String> rules = new ArrayList<String>();
+                                    List<String> rules = new ArrayList<>();
                                     if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
                                         InputStream instream = new FileInputStream(conf);
                                         if (instream != null) {
