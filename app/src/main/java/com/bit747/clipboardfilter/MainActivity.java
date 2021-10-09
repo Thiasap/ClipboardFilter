@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.regex.Pattern;
@@ -58,6 +60,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
         LogEnable.setChecked(sp.getBoolean("LogEnable",false));
         LogAll.setChecked(sp.getBoolean("LogAll",false));
         LogDetails.setChecked(sp.getBoolean("LogDetails",false));
+        ((TextView)findViewById(R.id.tv1)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView)findViewById(R.id.tv2)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView)findViewById(R.id.tv3)).setMovementMethod(LinkMovementMethod.getInstance());
     }
     @Override
     public void onClick(View v) {

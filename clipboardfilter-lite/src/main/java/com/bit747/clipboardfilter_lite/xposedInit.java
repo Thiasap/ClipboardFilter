@@ -22,7 +22,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class xposedInit implements IXposedHookLoadPackage{
     private final String TAG = "剪切板过滤器：";
     private final String CONF = "/sdcard/Android/hooker/clipboardfilter.conf";
-    private final String CUSTOM_RULE="";
+    private final String CUSTOM_RULE="^(\\$\\w+@.?\\w+).*.(\\$)$";
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) {
         File conf = new File(CONF);

@@ -72,12 +72,28 @@
         android:text="@string/LogAll"
         android:id="@+id/LogAll"/>
     <TextView
+        android:id="@+id/tv1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:layout_marginTop="50dp"
         android:layout_gravity="center"
         android:text="@string/thanks" />
-
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:text="@string/source" />
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:text="@string/author" />
 </LinearLayout>
 </ScrollView>

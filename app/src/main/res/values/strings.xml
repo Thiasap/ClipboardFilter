@@ -3,7 +3,10 @@
     <string name="notice3">使用正则表达式，一行一条规则。
         正则源码：Pattern.matches(pattern, content);以下提供正则测试
     </string>
-    <string name="thanks">部分源码来源于 https://github.com/congshengwu/Xposed_Clipboard</string>
+    <string name="thanks">部分源码来源于<a href='https://github.com/congshengwu/Xposed_Clipboard'>congshengwu@Github</a></string>
+    <string name="source">开源：<a href='https://github.com/Thiasap/ClipboardFilter'>Github</a></string>
+    <string name="author">酷安：<a href='http://www.coolapk.com/u/855305'>@今天内存降价了吗</a></string>
+
     <string name="reR">规则：</string>
     <string name="reS">被匹配的文本：</string>
     <string name="test">测试</string>
