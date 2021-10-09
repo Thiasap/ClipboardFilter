@@ -5,39 +5,22 @@
 <LinearLayout
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp"
     android:orientation="vertical">
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"
-        android:text="@string/notice1" />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_gravity="center"
-        android:text="@string/notice2" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginTop="40dp"
         android:layout_gravity="center"
         android:text="@string/notice3" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_gravity="center"
         android:text="@string/reR"
         />
@@ -46,15 +29,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_gravity="center"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_gravity="center"
         android:text="@string/reS"
         />
@@ -63,8 +42,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_gravity="center"/>
     <Button
         android:layout_width="wrap_content"
@@ -72,12 +49,32 @@
         android:id="@+id/goTest"
         android:layout_gravity="center"
         android:text="@string/test"/>
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/saveRules"
+        android:layout_gravity="center"
+        android:text="@string/save"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/LogEnable"
+        android:id="@+id/LogEnable"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/LogDetails"
+        android:id="@+id/LogDetails"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/LogAll"
+        android:id="@+id/LogAll"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_marginTop="50dp"
         android:layout_gravity="center"
         android:text="@string/thanks" />

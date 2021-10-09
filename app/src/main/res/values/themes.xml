@@ -2,7 +2,7 @@
 
     <!--设置-全屏-->
     <style name="myTheme" parent="android:Theme.DeviceDefault.Light">
-        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">true</item>
     </style>
 
 
