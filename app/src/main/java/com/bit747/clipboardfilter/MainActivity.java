@@ -57,7 +57,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
         LogEnable.setOnClickListener(this);
         LogAll.setOnClickListener(this);
         LogDetails.setOnClickListener(this);
-        LogEnable.setChecked(sp.getBoolean("LogEnable",false));
+        boolean LogA  = sp.getBoolean("LogEnable",false);
+        LogEnable.setChecked(LogA);
+        LogAll.setEnabled(LogA);
+        LogDetails.setEnabled(LogA);
         LogAll.setChecked(sp.getBoolean("LogAll",false));
         LogDetails.setChecked(sp.getBoolean("LogDetails",false));
         ((TextView)findViewById(R.id.tv1)).setMovementMethod(LinkMovementMethod.getInstance());
@@ -97,6 +100,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         switch (id){
             case R.id.LogEnable:
                 editor.putBoolean("LogEnable",cb.isChecked());
+                LogAll.setEnabled(cb.isChecked());
+                LogDetails.setEnabled(cb.isChecked());
                 toast("开启日志功能");
                 break;
             case R.id.LogDetails:

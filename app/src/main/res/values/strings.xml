@@ -1,7 +1,12 @@
 <resources>
-    <string name="app_name">ClipboardFilter</string>
-    <string name="notice3">使用正则表达式，一行一条规则。
-        正则源码：Pattern.matches(pattern, content);以下提供正则测试
+    <string name="app_name">剪贴板过滤器</string>
+    <string name="notice3">剪贴板过滤器，过滤写入剪贴板的内容。<br />
+        规则使用正则表达式语法，一行一条规则，语法请上网自己搜索自学，可以在软件中测试规则是否正确。<br />
+        以下提供正则测试
+    </string>
+    <string name="reg_source">
+        正则源码：<br />
+        Pattern.matches(pattern, content);
     </string>
     <string name="thanks">部分源码来源于<a href='https://github.com/congshengwu/Xposed_Clipboard'>congshengwu@Github</a></string>
     <string name="source">开源：<a href='https://github.com/Thiasap/ClipboardFilter'>Github</a></string>

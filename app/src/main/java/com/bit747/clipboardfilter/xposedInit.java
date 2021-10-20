@@ -38,11 +38,14 @@ public class xposedInit implements IXposedHookLoadPackage{
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
+                        //-------------source
+                        // https://github.com/congshengwu/Xposed_Clipboard/blob/master/app/src/main/java/com/csw/xposedclipboard/Xposed.java
                         // 获取剪切板内容
                         ClipData clipData = (ClipData) param.args[0];
                         String clipStr = clipData.getItemAt(0).getText().toString();
+                        //-------------source
                         if("".equals(clipStr)) return;
-                        // 获取应用名
+                        // 获取包名
                         String appName = lpparam.packageName;
                         //正则匹配
                         boolean isExist = false;
@@ -67,8 +70,6 @@ public class xposedInit implements IXposedHookLoadPackage{
                                 log = log + "内容：" + clipStr;
                             }
                             XposedBridge.log(log);
-                            //boolean LogAll = pref.getBoolean("LogAll",false);
-
                         }
 
                         if (isExist){
