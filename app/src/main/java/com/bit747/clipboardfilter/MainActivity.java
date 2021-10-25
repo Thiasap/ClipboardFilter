@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -42,10 +41,18 @@ public class MainActivity extends Activity implements View.OnClickListener{
         ruleE = findViewById(R.id.rules);
         content = findViewById(R.id.content);
         context = this;
-        sp = context.getSharedPreferences("rules", Context.MODE_WORLD_READABLE);
-        //sp = context.getSharedPreferences("rules", Context.MODE_PRIVATE);
+        try{
+            sp = context.getSharedPreferences("rules", Context.MODE_WORLD_READABLE);
+        }catch (Exception e){
+            sp = context.getSharedPreferences("rules", Context.MODE_PRIVATE);
+        }
         rules = decode(sp.getString("rules",""));
-        if ("".equals(rules)) rules="(1.fu:).*\n^(\\d+:/\\^).*.(\\^)$\n^(\\$\\w+@.?\\w+).*.(\\$)$";
+        if ("".equals(rules)){
+            rules="(1.fu:).*\n^(\\d+:/\\^).*.(\\^)$\n^(\\$\\w+@.?\\w+).*.(\\$)$";
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("rules",encode(rules));
+            editor.commit();
+        }
         ruleE.setText(rules);
         bt = findViewById(R.id.goTest);
         saveRules = findViewById(R.id.saveRules);
@@ -131,7 +138,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 if((sp.getString("rules","")).equals(encode(rules))){
                     Toast.makeText(context,"保存成功！",Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         alterDiaglog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

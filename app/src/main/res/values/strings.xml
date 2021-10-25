@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">剪贴板过滤器</string>
-    <string name="notice3">剪贴板过滤器，过滤写入剪贴板的内容。<br />
-        规则使用正则表达式语法，一行一条规则，语法请上网自己搜索自学，可以在软件中测试规则是否正确。<br />
-        以下提供正则测试
+    <string name="notice3">剪贴板过滤器，过滤写入剪贴板的内容。目前仅支持有XSharedPreferences的框架使用，比如Lsposed
+        <br/>\n规则使用正则表达式语法，一行一条规则，语法请上网自己搜索自学，可以在软件中测试规则是否正确。
+        <br/>\n以下提供正则测试
     </string>
     <string name="reg_source">
         正则源码：<br />
