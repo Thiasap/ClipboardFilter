@@ -17,7 +17,10 @@
             android:value="剪贴板过滤，使用正则过滤剪贴板写入，重点防止某些网站强迫剪贴板。" />
         <meta-data
             android:name="xposedminversion"
-            android:value="93" />
+            android:value="89" />
+        <meta-data
+            android:name="xposedsharedprefs"
+            android:value="true" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,6 +28,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:exported="true"
+            android:authorities="com.bit747.clipboardfilter"
+            android:name=".mCProvider"/>
     </application>
 
 </manifest>

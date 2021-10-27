@@ -2,9 +2,12 @@ package com.bit747.clipboardfilter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -25,6 +28,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
     Context context;
     String rules;
     CheckBox LogEnable,LogDetails,LogAll;
+    Uri uri_rules = Uri.parse("content://com.bit747.clipboardfilter/rules");
+    Uri uri_log = Uri.parse("content://com.bit747.clipboardfilter/log");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +53,25 @@ public class MainActivity extends Activity implements View.OnClickListener{
             sp = context.getSharedPreferences("rules", Context.MODE_PRIVATE);
         }
         rules = decode(sp.getString("rules",""));
-        if ("".equals(rules)){
+        boolean isFirstOpen = sp.getBoolean("isFirstOpen",true);
+        if (isFirstOpen){
             rules="(1.fu:).*\n^(\\d+:/\\^).*.(\\^)$\n^(\\$\\w+@.?\\w+).*.(\\$)$";
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("rules",encode(rules));
+            editor.putBoolean("isFirstOpen",false);
             editor.commit();
+
+            ContentValues values = new ContentValues();
+            values.put("_id", 1);
+            values.put("rules", encode(rules));
+            ContentResolver resolver =  getContentResolver();
+            resolver.insert(uri_rules,values);
+            values.clear();
+            values.put("_id", 1);
+            values.put("LogEnable", "0");
+            values.put("LogDetails", "0");
+            values.put("LogAll", "0");
+            resolver.insert(uri_log,values);
         }
         ruleE.setText(rules);
         bt = findViewById(R.id.goTest);
@@ -104,24 +124,31 @@ public class MainActivity extends Activity implements View.OnClickListener{
     public void CBLog(int id){
         CheckBox cb = findViewById(id);
         SharedPreferences.Editor editor = sp.edit();
+        String LogType="";
+        String LogS = cb.isChecked()?"1":"0";
         switch (id){
             case R.id.LogEnable:
-                editor.putBoolean("LogEnable",cb.isChecked());
+                LogType="LogEnable";
                 LogAll.setEnabled(cb.isChecked());
                 LogDetails.setEnabled(cb.isChecked());
                 toast("开启日志功能");
                 break;
             case R.id.LogDetails:
-                editor.putBoolean("LogDetails",cb.isChecked());
+                LogType="LogDetails";
                 toast("开启详细日志");
                 break;
             case R.id.LogAll:
-                editor.putBoolean("LogAll",cb.isChecked());
+                LogType="LogAll";
                 toast("开启所有日志");
                 break;
             default:
                 break;
         }
+        editor.putBoolean(LogType,cb.isChecked());
+        ContentValues values = new ContentValues();
+        values.put(LogType, LogS);
+        ContentResolver resolver =  getContentResolver();
+        resolver.update(uri_log,values,"_id = ?",new String[]{"1"});
         editor.commit();
     }
     public void saveRules(){
@@ -135,6 +162,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("rules",encode(rules));
                 editor.commit();
+                ContentValues values = new ContentValues();
+                values.put("rules", encode(rules));
+                ContentResolver resolver =  getContentResolver();
+                resolver.update(uri_rules,values,"_id = ?",new String[]{"1"});
                 if((sp.getString("rules","")).equals(encode(rules))){
                     Toast.makeText(context,"保存成功！",Toast.LENGTH_SHORT).show();
                 }
