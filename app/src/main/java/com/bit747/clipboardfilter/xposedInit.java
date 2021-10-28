@@ -1,7 +1,12 @@
 package com.bit747.clipboardfilter;
 
+import android.app.Application;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 
@@ -24,31 +29,64 @@ public class xposedInit implements IXposedHookLoadPackage{
     String decode(String str){
         return str.replaceAll("\\\\\\\\","\\\\").trim();
     }
+    String[] readConfigFromCP(String key, String[] col,Context ctx){
+        Uri uri = Uri.parse("content://"+BuildConfig.APPLICATION_ID+"/"+key);
+        ContentResolver resolver =  ctx.getContentResolver();
+        Cursor cursor = resolver.query(uri, col, null, null, null);
+        if(cursor == null )return new String[]{""};
+        String[] rel = new String[col.length];
+        while (cursor.moveToNext()) {
+            for (int i = 0; i < col.length; i++) {
+                rel[i] = cursor.getString(cursor.getColumnIndex(col[i]));
+            }
+        }
+        cursor.close();
+        return rel;
+    }
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if(lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) return;
-        XSharedPreferences pref = getPref("rules");
-        String rules_r;
-        if (pref == null) {
-            XposedBridge.log(TAG+"【Warning】Cannot load pref.");
-            StringBuilder sb = new StringBuilder();
-            if(new File(Environment.getDataDirectory(), "data/" + BuildConfig.APPLICATION_ID + "/shared_prefs/rules.xml").exists())
-                sb.append("shared_prefs file exists.\n");
-            else sb.append("shared_prefs file does not exists.\n");
-            sb.append("Xposed version: ").append(XposedBridge.getXposedVersion());
-            sb.append("\nAndroid version: ").append(Build.VERSION.SDK_INT);
-            XposedBridge.log(TAG+sb.toString());
-            return;
-        }else {
-            rules_r = decode(pref.getString("rules", ""));
-        }
-        String[] rules = rules_r.split("\n");
-        if("".equals(rules_r)) return;
+        XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        super.afterHookedMethod(param);
+                        Context ctx = (Context) param.args[0];
+                        StartHook(lpparam,ctx);
+                    }
+                });
+
+    }
+    public void StartHook(final XC_LoadPackage.LoadPackageParam lpparam,Context ctx){
         XposedHelpers.findAndHookMethod(ClipboardManager.class, "setPrimaryClip",
                 ClipData.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
+                        XSharedPreferences pref = getPref("rules");
+                        String rules_r;
+                        if (pref == null) {
+                            XposedBridge.log(TAG
+                                    + "【Warning】Cannot load pref. Try to use Content Provider.");
+                            rules_r = decode(readConfigFromCP("rules",new String[]{"rules"},ctx)[0]);
+                            if("".equals(rules_r)){
+                                XposedBridge.log(TAG+"【Error】rules: "+rules_r);
+                                StringBuilder sb = new StringBuilder();
+                                String spPath="data/"
+                                        + BuildConfig.APPLICATION_ID
+                                        + "/shared_prefs/rules.xml";
+                                if(new File(Environment.getDataDirectory(), spPath).exists())
+                                    sb.append("shared_prefs file exists.\n");
+                                else sb.append("shared_prefs file does not exists.\n");
+                                sb.append("Xposed version: ").append(XposedBridge.getXposedVersion());
+                                sb.append("\nAndroid version: ").append(Build.VERSION.SDK_INT);
+                                XposedBridge.log(TAG+sb.toString());
+                                return;
+                            }
+                        }else {
+                            rules_r = decode(pref.getString("rules", ""));
+                        }
+                        String[] rules = rules_r.split("\n");
                         //-------------source
                         // https://github.com/congshengwu/Xposed_Clipboard/blob/master/app/src/main/java/com/csw/xposedclipboard/Xposed.java
                         // 获取剪切板内容
@@ -70,19 +108,28 @@ public class xposedInit implements IXposedHookLoadPackage{
                         }catch(Exception e){
                             isExist = false;
                         }
-                        if(pref != null){
-                            boolean LogEnable = pref.getBoolean("LogEnable",false);
-                            if(LogEnable){
-                                boolean LogAll = pref.getBoolean("LogAll",false);
-                                if ((!LogAll)&&(!isExist)) return;
-                                String log=TAG+appName+" 写入了剪贴板。";
-                                log = log+(isExist?"【已过滤】":"");
-                                boolean LogDetails = pref.getBoolean("LogDetails",false);
-                                if (LogDetails){
-                                    log = log + "内容：" + clipStr;
-                                }
-                                XposedBridge.log(log);
+                        boolean LogEnable,LogAll,LogDetails;
+                        if(pref != null) {
+                            LogEnable = pref.getBoolean("LogEnable", false);
+                            LogDetails = pref.getBoolean("LogDetails", false);
+                            LogAll = pref.getBoolean("LogAll", false);
+                        }else {
+                            String[] log = readConfigFromCP("log",
+                                    new String[]{"LogEnable","LogDetails","LogAll"},
+                                    ctx);
+                            LogEnable = "1".equals(log[0]);
+                            LogDetails = "1".equals(log[1]);
+                            LogAll = "1".equals(log[2]);
+                        }
+                        if(LogEnable){
+                            if ((!LogAll)&&(!isExist)) return;
+                            String log=TAG+appName+" 写入了剪贴板。";
+                            log = log+(isExist?"【已过滤】":"");
+                            if (LogDetails){
+                                log = log + "内容：" + clipStr;
                             }
+                            XposedBridge.log(log);
+
                         }else {
                             XposedBridge.log(TAG+appName+" 写入了剪贴板。【已过滤】");
                         }
@@ -92,9 +139,7 @@ public class xposedInit implements IXposedHookLoadPackage{
                         }
                     }
                 });
-
     }
-
 
 
 }

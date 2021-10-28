@@ -13,7 +13,7 @@ public class mCProvider extends ContentProvider {
     private Context mContext;
     DBHelper mDbHelper = null;
     SQLiteDatabase db = null;
-    public static final String AUTOHORITY = "com.bit747.clipboardfilter";
+    public static final String AUTOHORITY = BuildConfig.APPLICATION_ID;
 
     public static final int Rules_Code = 1;
     public static final int Log_Code = 2;
@@ -41,10 +41,10 @@ public class mCProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(Uri uri, String[] columns, String selection,
                         String[] selectionArgs, String sortOrder) {
         String table = getTableName(uri);
-        return db.query(table,projection,selection,selectionArgs,null,null,sortOrder,null);
+        return db.query(table,columns,selection,selectionArgs,null,null,sortOrder,null);
     }
 
     @Override
