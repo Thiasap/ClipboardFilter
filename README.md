@@ -7,7 +7,7 @@
 使用`Pattern.matches(pattern, content);`循环判断规则。  
 保存规则前可以使用app自带的测试工具来测试规则是否生效。 
 自带了几条规则。
-### v1.5
+### v1.6
 
 Xposed在获取不到SharedPreferences时尝试使用ContentProvider。调整hook位置。
 
