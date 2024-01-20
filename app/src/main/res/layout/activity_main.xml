@@ -71,6 +71,11 @@
         android:layout_height="wrap_content"
         android:text="@string/LogAll"
         android:id="@+id/LogAll"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/HideIcon"
+        android:id="@+id/HideIcon"/>
     <TextView
         android:id="@+id/tv1"
         android:layout_width="match_parent"

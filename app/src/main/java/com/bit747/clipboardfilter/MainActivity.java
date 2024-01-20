@@ -2,11 +2,13 @@ package com.bit747.clipboardfilter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -28,6 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     Context context;
     String rules;
     CheckBox LogEnable,LogDetails,LogAll;
+    CheckBox HideIcon;
     Uri uri_rules = Uri.parse("content://com.bit747.clipboardfilter/rules");
     Uri uri_log = Uri.parse("content://com.bit747.clipboardfilter/log");
 
@@ -93,6 +96,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
         ((TextView)findViewById(R.id.tv1)).setMovementMethod(LinkMovementMethod.getInstance());
         ((TextView)findViewById(R.id.tv2)).setMovementMethod(LinkMovementMethod.getInstance());
         ((TextView)findViewById(R.id.tv3)).setMovementMethod(LinkMovementMethod.getInstance());
+        HideIcon = findViewById(R.id.HideIcon);
+        HideIcon.setChecked(sp.getBoolean("HideIcon",false));
+        HideIcon.setOnClickListener(this);
     }
     @Override
     public void onClick(View v) {
@@ -113,6 +119,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.LogAll:
                 CBLog(R.id.LogAll);
+                break;
+            case R.id.HideIcon:
+                doHideIcon();
                 break;
             default:
                 break;
@@ -150,6 +159,15 @@ public class MainActivity extends Activity implements View.OnClickListener{
         ContentResolver resolver =  getContentResolver();
         resolver.update(uri_log,values,"_id = ?",new String[]{"1"});
         editor.commit();
+    }
+    public void doHideIcon(){
+        int needHide = HideIcon.isChecked() ? PackageManager.COMPONENT_ENABLED_STATE_DISABLED : PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("HideIcon", HideIcon.isChecked());
+        editor.commit();
+        PackageManager packageManager = getApplicationContext().getPackageManager();
+        ComponentName componentName = new ComponentName(getApplicationContext(), MainActivity.class);
+        packageManager.setComponentEnabledSetting(componentName,needHide , PackageManager.DONT_KILL_APP);
     }
     public void saveRules(){
         final AlertDialog.Builder alterDiaglog = new AlertDialog.Builder(MainActivity.this);

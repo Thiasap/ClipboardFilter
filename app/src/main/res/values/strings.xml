@@ -19,5 +19,6 @@
     <string name="LogEnable">开启日志，可能会明显增加xposed日志量</string>
     <string name="LogDetails">详细日志，包含剪贴板内容，请注意隐私。</string>
     <string name="LogAll">全部日志，包含未过滤的剪贴板内容。</string>
+    <string name="HideIcon">隐藏桌面图标</string>
 
 </resources>

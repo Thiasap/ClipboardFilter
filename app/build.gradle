@@ -10,8 +10,8 @@ android {
         applicationId "com.bit747.clipboardfilter"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 16
-        versionName "1.6"
+        versionCode 17
+        versionName "1.7"
     }
 
     buildTypes {
