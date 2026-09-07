@@ -1,11 +1,19 @@
 # ClipboardFilter
-剪贴板写入过滤的xposed插件，基于正则表达式过滤剪贴板写入内容。默认hook所有app，lsposed可以选择作用域来限制。
+剪贴板写入过滤的 Xposed 模块，基于正则表达式过滤剪贴板写入内容。基于 **libxposed API 102** 开发，需要支持该 API 的框架（如 LSPosed 2.x+）。
 部分源码来源于 https://github.com/congshengwu/Xposed_Clipboard
 
 ## 用法：
 使用`Pattern.matches(pattern, content);`循环判断规则。
 保存规则前可以使用app自带的测试工具来测试规则是否生效。
 自带了几条规则。
+
+**注意**：模块默认不作用于任何应用。安装/升级后请在框架管理器的作用域中勾选要生效的应用，勾选后需强制停止目标应用使其重启生效。
+
+### v2.0
+- 迁移到 libxposed API 102（不再兼容旧版 Xposed API）。
+- 配置改用框架 RemotePreferences：规则与日志开关经模块应用保存后即时同步到已生效的应用，不再使用 XSharedPreferences / ContentProvider。
+ ---
+### 以下是旧的日志，可以不看
 ### v1.6
 Xposed在获取不到SharedPreferences时尝试使用ContentProvider。调整hook位置。
 ### v1.5
@@ -16,8 +24,7 @@ Xposed在获取不到SharedPreferences时尝试使用ContentProvider。调整hoo
 ### v1.3
 不再需要存储权限，写好规则保存正常使用即可，如果实在不知道怎么写，可以上酷安问[今天内存降价了吗](http://www.coolapk.com/u/855305)
 
- ---
-### 以下是旧的日志，可以不看
+
 ### v1.2及以前
 ### 1，被hook有存储权限
 直接修改`/sdcard/Android/hooker/clipboardfilter.conf`，一行一条规则

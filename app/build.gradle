@@ -3,29 +3,40 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdk 37
 
     defaultConfig {
         applicationId "com.bit747.clipboardfilter"
-        minSdkVersion 24
-        targetSdkVersion 30
-        versionCode 17
-        versionName "1.7"
+        minSdk 28
+        targetSdk 35
+        versionCode 20
+        versionName "2.0"
     }
 
     buildTypes {
         release {
+            // 保持不混淆；一旦开启 minifyEnabled，proguard-rules.pro 中的 libxposed 三件套必须生效
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+
+    packaging {
+        resources {
+            merges += "META-INF/xposed/*"
+            excludes += "**"
+        }
+    }
+
+    namespace 'com.bit747.clipboardfilter'
 }
 
 dependencies {
-    compileOnly 'de.robv.android.xposed:api:82'
+    compileOnly 'io.github.libxposed:api:102.0.0'
+    implementation 'io.github.libxposed:service:102.0.0'
 }

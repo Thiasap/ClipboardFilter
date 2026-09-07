@@ -1,7 +1,0 @@
-<resources>
-    <style name="myTheme" parent="android:Theme.DeviceDefault.Light">
-        <item name="android:windowNoTitle">true</item>
-    </style>
-
-
-</resources>

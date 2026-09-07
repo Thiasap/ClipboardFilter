@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bit747.clipboardfilter">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- libxposed API 102 模块：不再使用任何 xposed* meta-data（Legacy 残留）。
+         模块名取 android:label，描述取 android:description，
+         入口声明在 resources/META-INF/xposed/java_init.list。 -->
     <application
+        android:name=".CFApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:description="@string/module_description"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/myTheme"
         android:fullBackupContent="true">
-        <meta-data
-            android:name="xposedmodule"
-            android:value="true" />
-        <meta-data
-            android:name="xposeddescription"
-            android:value="剪贴板过滤，使用正则过滤剪贴板写入，重点防止某些网站强迫剪贴板。" />
-        <meta-data
-            android:name="xposedminversion"
-            android:value="89" />
-        <meta-data
-            android:name="xposedsharedprefs"
-            android:value="true" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,10 +31,6 @@
                 <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
             </intent-filter>
         </activity-alias>
-        <provider
-            android:exported="true"
-            android:authorities="com.bit747.clipboardfilter"
-            android:name=".mCProvider"/>
     </application>
 
 </manifest>

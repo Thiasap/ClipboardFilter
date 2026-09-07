@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">剪贴板过滤器</string>
-    <string name="notice3">剪贴板过滤器，过滤写入剪贴板的内容。目前仅支持有XSharedPreferences的框架使用，比如Lsposed
-        <br/>\n规则使用正则表达式语法，一行一条规则，语法请上网自己搜索自学，可以在软件中测试规则是否正确。
+    <string name="module_description">剪贴板过滤，使用正则过滤剪贴板写入，重点防止某些网站强迫写入剪贴板。需要支持 libxposed API 102 的框架（如 LSPosed 2.x+）。请在框架管理器的作用域中勾选要生效的应用——模块已预置常见浏览器等作为推荐作用域，勾选后需强制停止并重新启动目标应用。</string>
+    <string name="notice3">剪贴板过滤器，过滤写入剪贴板的内容。需要支持 libxposed API 102 的框架（如 LSPosed 2.x）。
+        <br/>\n规则使用正则表达式语法，一行一条规则，可以在软件中测试规则是否正确。
+        <br/>\n注意：安装/升级后请在框架管理器里为本模块勾选作用域（推荐作用域已预置常见浏览器等），并在勾选后强制停止目标应用使其重启生效。
         <br/>\n以下提供正则测试
     </string>
     <string name="reg_source">
@@ -21,4 +23,6 @@
     <string name="LogAll">全部日志，包含未过滤的剪贴板内容。</string>
     <string name="HideIcon">隐藏桌面图标</string>
 
+    <string name="service_connected">框架服务已连接：规则与开关保存后即时同步到已生效的应用。</string>
+    <string name="service_disconnected">未连接框架服务。请确认设备已安装并启用支持 libxposed API 102 的框架（如 LSPosed），并在框架管理器中勾选本模块的作用域。未连接时无法读取/保存规则与日志开关。</string>
 </resources>
